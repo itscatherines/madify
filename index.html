@@ -478,25 +478,78 @@
       <div class="topbar">
         <div class="logo" style="font-size:20px">Songs hinzufügen</div>
       </div>
-      <div class="section">
-        <p style="font-size:14px; color:var(--text2); margin-bottom:20px; line-height:1.6">Lade bis zu 20 Songs in deine Madify-Bibliothek. MP3, WAV, OGG, FLAC und M4A werden unterstützt.</p>
+
+      <!-- TAB SWITCHER -->
+      <div class="section" style="padding-bottom:0">
+        <div style="display:flex; gap:0; background:var(--bg3); border-radius:12px; padding:4px; margin-bottom:20px">
+          <div class="tab-btn active" id="tabLocal" onclick="switchTab('local')" style="flex:1;text-align:center;padding:8px;border-radius:9px;font-size:13px;font-weight:600;cursor:pointer;transition:all .2s;background:var(--bg4);color:var(--text)">
+            📁 Vom Gerät
+          </div>
+          <div class="tab-btn" id="tabDrive" onclick="switchTab('drive')" style="flex:1;text-align:center;padding:8px;border-radius:9px;font-size:13px;font-weight:600;cursor:pointer;transition:all .2s;color:var(--text3)">
+            ☁️ Google Drive
+          </div>
+        </div>
       </div>
-      <div class="upload-zone" id="uploadZone">
-        <input type="file" accept="audio/*" multiple id="fileInput">
-        <div class="upload-icon">🎵</div>
-        <div class="upload-title">Songs auswählen</div>
-        <div class="upload-sub">Tippen zum auswählen oder Dateien hierher ziehen</div>
+
+      <!-- LOCAL UPLOAD -->
+      <div id="panelLocal">
+        <div class="section" style="padding-top:0">
+          <p style="font-size:13px; color:var(--text2); margin-bottom:16px; line-height:1.6">MP3, WAV, OGG, FLAC und M4A werden unterstützt. Nur du kannst diese Songs hören.</p>
+        </div>
+        <div class="upload-zone" id="uploadZone">
+          <input type="file" accept="audio/*" multiple id="fileInput">
+          <div class="upload-icon">🎵</div>
+          <div class="upload-title">Songs auswählen</div>
+          <div class="upload-sub">Tippen oder Dateien hierher ziehen</div>
+        </div>
       </div>
+
+      <!-- GOOGLE DRIVE -->
+      <div id="panelDrive" style="display:none">
+        <div class="section" style="padding-top:0; padding-bottom:12px">
+          <div style="background:linear-gradient(135deg,rgba(244,114,182,.08),rgba(168,85,247,.08)); border:1px solid rgba(168,85,247,.2); border-radius:14px; padding:14px 16px; margin-bottom:20px">
+            <p style="font-size:13px; font-weight:600; color:var(--purple); margin-bottom:8px">📋 So geht's in 3 Schritten:</p>
+            <ol style="font-size:13px; color:var(--text2); line-height:1.9; padding-left:18px">
+              <li>Song in Google Drive hochladen</li>
+              <li>Rechtsklick → <b style="color:var(--text)">"Link freigeben"</b> → <b style="color:var(--text)">"Jeder mit dem Link"</b></li>
+              <li>Link hier einfügen & Song-Name eingeben</li>
+            </ol>
+          </div>
+
+          <div style="background:var(--bg3); border:1px solid var(--border); border-radius:14px; padding:16px; display:flex; flex-direction:column; gap:12px">
+            <div>
+              <label style="font-size:12px; color:var(--text3); font-weight:600; letter-spacing:.5px; display:block; margin-bottom:6px">SONG-TITEL</label>
+              <input type="text" id="driveTitle" placeholder="z.B. Blinding Lights" style="width:100%; background:var(--bg4); border:1px solid var(--border); border-radius:10px; padding:10px 14px; color:var(--text); font-family:'Outfit',sans-serif; font-size:14px; outline:none;">
+            </div>
+            <div>
+              <label style="font-size:12px; color:var(--text3); font-weight:600; letter-spacing:.5px; display:block; margin-bottom:6px">KÜNSTLER (optional)</label>
+              <input type="text" id="driveArtist" placeholder="z.B. The Weeknd" style="width:100%; background:var(--bg4); border:1px solid var(--border); border-radius:10px; padding:10px 14px; color:var(--text); font-family:'Outfit',sans-serif; font-size:14px; outline:none;">
+            </div>
+            <div>
+              <label style="font-size:12px; color:var(--text3); font-weight:600; letter-spacing:.5px; display:block; margin-bottom:6px">GOOGLE DRIVE LINK</label>
+              <input type="text" id="driveUrl" placeholder="https://drive.google.com/file/d/..." style="width:100%; background:var(--bg4); border:1px solid var(--border); border-radius:10px; padding:10px 14px; color:var(--text); font-family:'Outfit',sans-serif; font-size:14px; outline:none;">
+            </div>
+            <button onclick="addDriveSong()" style="width:100%; padding:12px; border-radius:10px; background:var(--grad); border:none; color:white; font-family:'Outfit',sans-serif; font-size:15px; font-weight:600; cursor:pointer; transition:opacity .2s">
+              Song hinzufügen ✦
+            </button>
+          </div>
+
+          <div style="margin-top:14px; padding:12px 14px; background:var(--bg3); border-radius:12px; border:1px solid var(--border)">
+            <p style="font-size:12px; color:var(--text3); line-height:1.6">💡 <b style="color:var(--text2)">Tipp:</b> Google Drive Links funktionieren für alle, die den Madify-Link haben – solange der Song in Drive auf "Jeder mit dem Link" steht.</p>
+          </div>
+        </div>
+      </div>
+
       <div class="section" style="margin-top:8px">
         <div class="section-header">
-          <span class="section-title">Hochgeladene Songs</span>
+          <span class="section-title">Alle Songs</span>
           <span id="songCount" style="font-size:13px; color:var(--text3)">0 / 20</span>
         </div>
         <div class="track-list" id="uploadedList">
           <div class="empty">
             <div class="empty-icon">📂</div>
             <h3>Noch keine Songs</h3>
-            <p>Wähle Musikdateien aus deinem Gerät</p>
+            <p>Füge Songs vom Gerät oder per Drive-Link hinzu</p>
           </div>
         </div>
       </div>
@@ -619,7 +672,19 @@
 <audio id="audioEl"></audio>
 
 <script>
-const songs = [];
+const songs = [
+  {
+    id: 1,
+    title: "Alarm im Bau",
+    artist: "DJ ausm Bau",
+    url: "https://drive.google.com/file/d/1fZj9sib0ISq_tNRzXjA5t1vLgoN2L25R/view?usp=drive_link",
+    emoji: "🎵",
+    color: "c1",
+    duration: 0,
+    liked: false,
+    isDrive: true
+  }
+];
 let currentIdx = -1;
 let isPlaying = false;
 let isShuffle = true;
@@ -939,6 +1004,63 @@ document.getElementById('searchInput').addEventListener('input', function() {
   renderTrackList('searchResults', results);
   if (!results.length) document.getElementById('searchResults').innerHTML = `<div class="empty"><div class="empty-icon">😔</div><h3>Keine Ergebnisse</h3><p>Versuche einen anderen Suchbegriff</p></div>`;
 });
+
+// ── TAB SWITCH ──
+function switchTab(tab) {
+  document.getElementById('panelLocal').style.display = tab === 'local' ? 'block' : 'none';
+  document.getElementById('panelDrive').style.display = tab === 'drive' ? 'block' : 'none';
+  document.getElementById('tabLocal').style.background = tab === 'local' ? 'var(--bg4)' : 'transparent';
+  document.getElementById('tabLocal').style.color = tab === 'local' ? 'var(--text)' : 'var(--text3)';
+  document.getElementById('tabDrive').style.background = tab === 'drive' ? 'var(--bg4)' : 'transparent';
+  document.getElementById('tabDrive').style.color = tab === 'drive' ? 'var(--text)' : 'var(--text3)';
+}
+
+// ── GOOGLE DRIVE ──
+function parseDriveUrl(url) {
+  // formats: /file/d/ID/view, /open?id=ID, export?id=ID
+  let id = null;
+  const m1 = url.match(/\/file\/d\/([a-zA-Z0-9_-]+)/);
+  const m2 = url.match(/[?&]id=([a-zA-Z0-9_-]+)/);
+  if (m1) id = m1[1];
+  else if (m2) id = m2[1];
+  if (!id) return null;
+  return `https://drive.google.com/uc?export=download&id=${id}`;
+}
+
+function addDriveSong() {
+  const title = document.getElementById('driveTitle').value.trim();
+  const artist = document.getElementById('driveArtist').value.trim() || 'Unbekannt';
+  const rawUrl = document.getElementById('driveUrl').value.trim();
+
+  if (!title) { toast('Bitte einen Song-Titel eingeben'); return; }
+  if (!rawUrl) { toast('Bitte einen Google Drive Link einfügen'); return; }
+  if (songs.length >= 20) { toast('Maximale Anzahl (20) erreicht!'); return; }
+
+  const url = parseDriveUrl(rawUrl);
+  if (!url) { toast('Ungültiger Google Drive Link'); return; }
+
+  const song = {
+    id: Date.now() + Math.random(),
+    title, artist, url,
+    emoji: emojis[Math.floor(Math.random() * emojis.length)],
+    color: colors[songs.length % colors.length],
+    duration: 0, liked: false, isDrive: true
+  };
+  songs.push(song);
+
+  // try to get duration
+  const tmpAudio = new Audio();
+  tmpAudio.crossOrigin = 'anonymous';
+  tmpAudio.src = url;
+  tmpAudio.addEventListener('loadedmetadata', () => { song.duration = tmpAudio.duration; renderAll(); });
+  tmpAudio.addEventListener('error', () => { /* duration stays 0 */ });
+
+  document.getElementById('driveTitle').value = '';
+  document.getElementById('driveArtist').value = '';
+  document.getElementById('driveUrl').value = '';
+  renderAll();
+  toast(`"${title}" hinzugefügt ☁️`);
+}
 
 // ── KEYBOARD ──
 document.addEventListener('keydown', e => {
